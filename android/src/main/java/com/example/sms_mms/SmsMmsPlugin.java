@@ -50,7 +50,7 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         if (call.method.equals("sendMms")) {
 
-            @Nullable String filePath = call.argument("path");
+            @Nullable ArrayList filePath = call.argument("path");
             List<String> address = call.argument("recipientNumbers");
             String message = call.argument("message");
 
