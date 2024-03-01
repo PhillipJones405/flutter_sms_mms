@@ -74,7 +74,8 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
             System.out.println("");
 
             try {
-                sendSMS(filePathString.toString(), addressString.toString(), message);
+                // sendSMS(filePathString.toString(), addressString.toString(), message);
+                sendSMS(filePath[0], addressString.toString(), message);
             } catch (Exception e) {
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -99,7 +100,7 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
         }
 
         if (filePath != null) {
-            File file = new File(filePath[0]);
+            File file = new File(filePath);
             assert context != null;
             String providerAuthority = context.getPackageName() + ".flutter.mms";
             fileUri = FileProvider.getUriForFile(context, providerAuthority, file);
