@@ -124,6 +124,8 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
 
             // Iterate over the filePaths array
             for (String fp : filePaths) {
+                System.out.println("in for loop");
+                System.out.println(fp);
                 // Create a File object for each path
                 // File f = new File(fp);
 
@@ -137,10 +139,13 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
                 // // fileUris.add(fUri);
                 // fileUris.add(f);
                 Uri fpp = Uri.parse(fp);
+                System.out.println(fpp);
                 filePathArray.add(fpp);
+                
             }
 
         }
+        System.out.println("out of for loop");
         System.out.println(filePathArray);
 
 
