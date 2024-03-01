@@ -106,12 +106,35 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
             System.out.println("");
             File file = new File(filePath);
             System.out.println(file);
-            assert context != null;
+//            assert context != null;
             String providerAuthority = context.getPackageName() + ".flutter.mms";
-            fileUri = FileProvider.getUriForFile(context, providerAuthority, file);
-            System.out.println(fileUri);
-            System.out.println(fileUri.getClass().getName());
+            String[] strSplit = filePath.split(";");
+//            ArrayList<Uri> filePathArray =  new ArrayList<String>(
+//                    Arrays.asList(strSplit));
+//            fileUri = FileProvider.getUriForFile(context, providerAuthority, file);
+//            System.out.println(fileUri);
+//            System.out.println(fileUri.getClass().getName());
+            String[] filePaths = filePathsString.split(";");
+
+            // Create an ArrayList to hold the Uris
+            ArrayList<Uri> fileUris = new ArrayList<>();
+
+            // Iterate over the filePaths array
+            for (String fp : filePaths) {
+                // Create a File object for each path
+                File f = new File(fp);
+
+                assert context != null;
+
+                // Get the Uri for the file using FileProvider
+                Uri fUri = FileProvider.getUriForFile(context, providerAuthority, f);
+
+                // Add the Uri to the ArrayList
+                fileUris.add(fUri);
+            }
+
         }
+
 
         // String action = filePath != null ? Intent.ACTION_SEND : Intent.ACTION_VIEW;
         String action = filePath != null ? Intent.ACTION_SEND_MULTIPLE : Intent.ACTION_VIEW;
@@ -128,10 +151,10 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
             String mimeType = context.getContentResolver().getType(returnUri);
             shareIntent.setType(mimeType);
             // shareIntent.putExtra(EXTRA_STREAM, fileUri);
-            shareIntent.putParcelableArrayListExtra(EXTRA_STREAM, fileUri);
+            shareIntent.putParcelableArrayListExtra(EXTRA_STREAM, fileUris);
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             if (context != null) {
-                context.grantUriPermission(DEFAULT_MESSAGE_PACKAGE_NAME, fileUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                context.grantUriPermission(DEFAULT_MESSAGE_PACKAGE_NAME, fileUris, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
             }
             shareIntent.putExtra("address", address);
         } else {
