@@ -148,12 +148,12 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
         String action = filePath != null ? Intent.ACTION_SEND_MULTIPLE : Intent.ACTION_VIEW;
 
 
-        // Intent shareIntent = new Intent(action);
+        Intent shareIntent = new Intent(action);
         shareIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         shareIntent.putExtra("sms_body", message);
         
-        Intent shareIntent = new Intent();
+        // Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
         shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, filePathArray);
         shareIntent.setType("image/*");
