@@ -90,6 +90,7 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
 
         @Nullable Uri fileUri = null;
         ArrayList<Uri> fileUris = new ArrayList<>();
+        ArrayList<String> filePathArray = new ArrayList<>();
         String DEFAULT_MESSAGE_PACKAGE_NAME = "";
 
 
@@ -124,17 +125,19 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
             // Iterate over the filePaths array
             for (String fp : filePaths) {
                 // Create a File object for each path
-                File f = new File(fp);
+                // File f = new File(fp);
 
                 assert context != null;
 
-                // Get the Uri for the file using FileProvider
-                Uri fUri = FileProvider.getUriForFile(context, providerAuthority, f);
+                // // Get the Uri for the file using FileProvider
+                // Uri fUri = FileProvider.getUriForFile(context, providerAuthority, f);
                 
 
-                // Add the Uri to the ArrayList
-                // fileUris.add(fUri);
-                fileUris.add(f);
+                // // Add the Uri to the ArrayList
+                // // fileUris.add(fUri);
+                // fileUris.add(f);
+
+                filePathsArray.add(f);
             }
 
         }
@@ -156,11 +159,13 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
             String mimeType = context.getContentResolver().getType(returnUri);
             shareIntent.setType(mimeType);
             // shareIntent.putExtra(EXTRA_STREAM, fileUri);
-            shareIntent.putParcelableArrayListExtra(EXTRA_STREAM, fileUris);
+            // shareIntent.putParcelableArrayListExtra(EXTRA_STREAM, fileUris);
+            shareIntent.putParcelableArrayListExtra(EXTRA_STREAM, filePaths);
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             if (context != null) {
                 // context.grantUriPermission(DEFAULT_MESSAGE_PACKAGE_NAME, fileUris, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                for (Uri fileUriSing : fileUris) {
+                // for (Uri fileUriSing : fileUris) {
+                for (Uri fileUriSing : filePaths) {
                     context.grantUriPermission(DEFAULT_MESSAGE_PACKAGE_NAME, fileUriSing, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 }
             }
