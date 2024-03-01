@@ -154,7 +154,7 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
         shareIntent.putExtra("sms_body", message);
 
         if(filePath != null) {
-            shareIntent.setData(fpp);
+            shareIntent.setData(filePathArray);
             Uri returnUri = shareIntent.getData();
             String mimeType = context.getContentResolver().getType(returnUri);
             shareIntent.setType(mimeType);
