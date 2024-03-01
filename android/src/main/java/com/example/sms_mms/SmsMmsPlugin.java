@@ -130,9 +130,11 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
 
                 // Get the Uri for the file using FileProvider
                 Uri fUri = FileProvider.getUriForFile(context, providerAuthority, f);
+                
 
                 // Add the Uri to the ArrayList
-                fileUris.add(fUri);
+                // fileUris.add(fUri);
+                fileUris.add(f);
             }
 
         }
