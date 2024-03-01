@@ -98,7 +98,8 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
             fileUri = FileProvider.getUriForFile(context, providerAuthority, file);
         }
 
-        String action = filePath != null ? Intent.ACTION_SEND : Intent.ACTION_VIEW;
+        // String action = filePath != null ? Intent.ACTION_SEND : Intent.ACTION_VIEW;
+        String action = filePath != null ? Intent.ACTION_SEND_MULTIPLE : Intent.ACTION_VIEW;
 
 
         Intent shareIntent = new Intent(action);
