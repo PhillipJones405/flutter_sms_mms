@@ -75,7 +75,7 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
 
             try {
                 // sendSMS(filePathString.toString(), addressString.toString(), message);
-                sendSMS(filePath[0], addressString.toString(), message);
+                sendSMS(filePath.get(0).toString(), addressString.toString(), message);
             } catch (Exception e) {
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
