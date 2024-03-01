@@ -89,6 +89,7 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
     protected void sendSMS(@Nullable String filePath, String address, String message) throws Exception {
 
         @Nullable Uri fileUri = null;
+        ArrayList<Uri> fileUris = new ArrayList<>();
         String DEFAULT_MESSAGE_PACKAGE_NAME = "";
 
 
@@ -118,7 +119,7 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
             String[] filePaths = filePath.split(";");
 
             // Create an ArrayList to hold the Uris
-            ArrayList<Uri> fileUris = new ArrayList<>();
+            
 
             // Iterate over the filePaths array
             for (String fp : filePaths) {
