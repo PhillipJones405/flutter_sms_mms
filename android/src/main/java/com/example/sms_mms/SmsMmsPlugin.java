@@ -63,7 +63,7 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
             StringBuilder filePathString = new StringBuilder();
 
             for (int i = 0; i < (filePath != null ? filePath.size() : 0); i++) {
-                filePath.append(filePath.get(i)).append(";");
+                filePathString.append(filePath.get(i)).append(";");
             }
 
             try {
