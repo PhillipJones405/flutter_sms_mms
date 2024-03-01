@@ -137,7 +137,7 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
                 // // fileUris.add(fUri);
                 // fileUris.add(f);
 
-                filePathsArray.add(f);
+                filePathsArray.add(fp);
             }
 
         }
