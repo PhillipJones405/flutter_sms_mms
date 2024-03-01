@@ -90,7 +90,7 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
 
         @Nullable Uri fileUri = null;
         ArrayList<Uri> fileUris = new ArrayList<>();
-        ArrayList<String> filePathArray = new ArrayList<>();
+        ArrayList<Uri> filePathArray = new ArrayList<>();
         String DEFAULT_MESSAGE_PACKAGE_NAME = "";
 
 
@@ -136,8 +136,8 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
                 // // Add the Uri to the ArrayList
                 // // fileUris.add(fUri);
                 // fileUris.add(f);
-
-                filePathArray.add(fp);
+                Uri fpp = Uri.parse(fp);
+                filePathArray.add(fpp);
             }
 
         }
@@ -154,7 +154,7 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
         shareIntent.putExtra("sms_body", message);
 
         if(filePath != null) {
-            shareIntent.setData(filePathArray);
+            shareIntent.setData(fpp);
             Uri returnUri = shareIntent.getData();
             String mimeType = context.getContentResolver().getType(returnUri);
             shareIntent.setType(mimeType);
