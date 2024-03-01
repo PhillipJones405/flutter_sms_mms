@@ -65,6 +65,13 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
             for (int i = 0; i < (filePath != null ? filePath.size() : 0); i++) {
                 filePathString.append(filePath.get(i)).append(";");
             }
+            System.out.println("");
+            System.out.println("");
+            System.out.println(filePath);
+            System.out.println("");
+            System.out.println(filePathString);
+            System.out.println("");
+            System.out.println("");
 
             try {
                 sendSMS(filePathString.toString(), addressString.toString(), message);
