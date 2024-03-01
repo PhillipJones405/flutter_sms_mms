@@ -100,10 +100,16 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
         }
 
         if (filePath != null) {
+            System.out.println("");
+            System.out.println(filePath);
+            System.out.println("");
             File file = new File(filePath);
+            System.out.println(file);
             assert context != null;
             String providerAuthority = context.getPackageName() + ".flutter.mms";
             fileUri = FileProvider.getUriForFile(context, providerAuthority, file);
+            System.out.println(fileUri);
+            System.out.println(fileUri.getClass().getName());
         }
 
         // String action = filePath != null ? Intent.ACTION_SEND : Intent.ACTION_VIEW;
