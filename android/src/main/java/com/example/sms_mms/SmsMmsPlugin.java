@@ -156,7 +156,10 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
             shareIntent.putParcelableArrayListExtra(EXTRA_STREAM, fileUris);
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             if (context != null) {
-                context.grantUriPermission(DEFAULT_MESSAGE_PACKAGE_NAME, fileUris, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                // context.grantUriPermission(DEFAULT_MESSAGE_PACKAGE_NAME, fileUris, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                for (Uri fileUriSing : fileUris) {
+                    context.grantUriPermission(DEFAULT_MESSAGE_PACKAGE_NAME, fileUriSing, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
             }
             shareIntent.putExtra("address", address);
         } else {
