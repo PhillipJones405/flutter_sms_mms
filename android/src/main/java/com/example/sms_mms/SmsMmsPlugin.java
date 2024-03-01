@@ -152,15 +152,21 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
         shareIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         shareIntent.putExtra("sms_body", message);
+        
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
+        shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, filePathArray);
+        shareIntent.setType("image/*");
 
         if(filePath != null) {
-            shareIntent.setData(filePathArray);
-            Uri returnUri = shareIntent.getData();
-            String mimeType = context.getContentResolver().getType(returnUri);
-            shareIntent.setType(mimeType);
+            // shareIntent.setData(filePathArray);
+            // Uri returnUri = shareIntent.getData();
+            // String mimeType = context.getContentResolver().getType(returnUri);
+            // shareIntent.setType(mimeType);
+            
             // shareIntent.putExtra(EXTRA_STREAM, fileUri);
             // shareIntent.putParcelableArrayListExtra(EXTRA_STREAM, fileUris);
-            shareIntent.putParcelableArrayListExtra(EXTRA_STREAM, filePathArray);
+            // shareIntent.putParcelableArrayListExtra(EXTRA_STREAM, filePathArray);
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             if (context != null) {
                 // context.grantUriPermission(DEFAULT_MESSAGE_PACKAGE_NAME, fileUris, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
