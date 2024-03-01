@@ -102,6 +102,7 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
         if (filePath != null) {
             System.out.println("");
             System.out.println(filePath);
+            System.out.println(filePath.getClass().getName());
             System.out.println("");
             File file = new File(filePath);
             System.out.println(file);
@@ -126,7 +127,8 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
             Uri returnUri = shareIntent.getData();
             String mimeType = context.getContentResolver().getType(returnUri);
             shareIntent.setType(mimeType);
-            shareIntent.putExtra(EXTRA_STREAM, fileUri);
+            // shareIntent.putExtra(EXTRA_STREAM, fileUri);
+            shareIntent.putParcelableArrayListExtra(EXTRA_STREAM, fileUri);
             shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             if (context != null) {
                 context.grantUriPermission(DEFAULT_MESSAGE_PACKAGE_NAME, fileUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
