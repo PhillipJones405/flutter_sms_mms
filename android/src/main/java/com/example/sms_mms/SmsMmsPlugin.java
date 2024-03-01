@@ -50,7 +50,7 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         if (call.method.equals("sendMms")) {
 
-            @Nullable List<String> filePath = call.argument("path");
+            List<String> filePath = call.argument("path");
             List<String> address = call.argument("recipientNumbers");
             String message = call.argument("message");
 
@@ -59,9 +59,15 @@ public class SmsMmsPlugin implements FlutterPlugin, MethodCallHandler {
             for (int i = 0; i < (address != null ? address.size() : 0); i++) {
                 addressString.append(address.get(i)).append(";");
             }
+            
+            StringBuilder filePathString = new StringBuilder();
+
+            for (int i = 0; i < (filePath != null ? filePath.size() : 0); i++) {
+                filePath.append(filePath.get(i)).append(";");
+            }
 
             try {
-                sendSMS(filePath, addressString.toString(), message);
+                sendSMS(filePathString.toString(), addressString.toString(), message);
             } catch (Exception e) {
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
