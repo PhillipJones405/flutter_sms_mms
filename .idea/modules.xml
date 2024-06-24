@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/sms_mms.iml" filepath="$PROJECT_DIR$/.idea/sms_mms.iml" />
-      <module fileurl="file://$PROJECT_DIR$/android/sms_mms_android.iml" filepath="$PROJECT_DIR$/android/sms_mms_android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sendMultiMMS.iml" filepath="$PROJECT_DIR$/sendMultiMMS.iml" />
     </modules>
   </component>
 </project>
