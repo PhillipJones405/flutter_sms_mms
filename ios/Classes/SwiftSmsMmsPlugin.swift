@@ -2,70 +2,64 @@ import Flutter
 import UIKit
 import MessageUI
 
-public class SwiftSmsMmsPlugin: NSObject, FlutterPlugin, UINavigationControllerDelegate, MFMessageComposeViewControllerDelegate {
-    var result: FlutterResult?
-    var _arguments = [String: Any]()
-    
-    public static func register(with registrar: FlutterPluginRegistrar) {
-        let channel = FlutterMethodChannel(name: "sms_mms", binaryMessenger: registrar.messenger())
-        let instance = SwiftSmsMmsPlugin()
-        registrar.addMethodCallDelegate(instance, channel: channel)
+public class SmsMmsPlugin: NSObject, FlutterPlugin, MFMessageComposeViewControllerDelegate {
+  var result: FlutterResult?
+
+  public static func register(with registrar: FlutterPluginRegistrar) {
+    let channel = FlutterMethodChannel(name: "sms_mms", binaryMessenger: registrar.messenger())
+    let instance = SmsMmsPlugin()
+    registrar.addMethodCallDelegate(instance, channel: channel)
+  }
+
+  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+    if call.method == "sendMms" {
+    print("in public func handle")
+      guard let args = call.arguments as? [String: Any],
+            let paths = args["paths"] as? [String],
+            let recipients = args["recipientNumbers"] as? [String],
+            let message = args["message"] as? String else {
+        result(FlutterError(code: "INVALID_ARGUMENT", message: "Invalid argument", details: nil))
+        return
+      }
+      sendMms(paths: paths, recipients: recipients, message: message, result: result)
+    } else {
+      result(FlutterMethodNotImplemented)
     }
-    
-    public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        switch call.method {
-        case "sendMms":
-            _arguments = call.arguments as! [String : Any];
-#if targetEnvironment(simulator)
-            result(FlutterError(
-                code: "message_not_sent",
-                message: "Cannot send message on this device!",
-                details: "Cannot send SMS and MMS on a Simulator. Test on a real device."
-            )
-            )
-#else
-            if (MFMessageComposeViewController.canSendText() && MFMessageComposeViewController.canSendAttachments()) {
-                self.result = result
-                let controller = MFMessageComposeViewController()
-                controller.body = _arguments["message"] as? String
-                
-                do {
-                    
-                    if _arguments["path"] != nil {
-                        try controller.addAttachmentData(NSData(contentsOfFile:  _arguments["path"] as? String ?? "") as Data, typeIdentifier: "public.image", filename: "attachment.jpeg")
-                    }
-                } catch {
-                    
-                }
-                controller.recipients = _arguments["recipientNumbers"] as? [String]
-                controller.delegate = self
-                controller.messageComposeDelegate = self
-                UIApplication.shared.keyWindow?.rootViewController?.present(controller, animated: true, completion: nil)
-            } else {
-                result(FlutterError(
-                    code: "device_not_capable",
-                    message: "The current device is not capable of sending MMS.",
-                    details: "A device may be unable to send messages if it does not support messaging or if it is not currently configured to send messages. This only applies to the ability to send text messages via iMessage, SMS, and MMS."
-                )
-                )
-            }
-#endif
-            
-        default:
-            result(FlutterMethodNotImplemented)
-            break
+  }
+
+  private func sendMms(paths: [String], recipients: [String], message: String, result: @escaping FlutterResult) {
+    print("in sendMMs")
+    if MFMessageComposeViewController.canSendText() {
+       print("in canSendText")
+      let messageController = MFMessageComposeViewController()
+      messageController.messageComposeDelegate = self
+      messageController.recipients = recipients
+      messageController.body = message
+      print("check if can send attachments")
+      if MFMessageComposeViewController.canSendAttachments() {
+        print("in if to make for loop for paths")
+        for path in paths {
+          let fileURL = URL(fileURLWithPath: path)
+          messageController.addAttachmentURL(fileURL, withAlternateFilename: nil)
         }
+      }
+
+      self.result = result
+      if let rootViewController = UIApplication.shared.delegate?.window??.rootViewController {
+        rootViewController.present(messageController, animated: true, completion: nil)
+      }
+    } else {
+      result(FlutterError(code: "UNAVAILABLE", message: "SMS services are not available", details: nil))
     }
-    
-    public func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
-        let map: [MessageComposeResult: String] = [
-            MessageComposeResult.sent: "sent",
-            MessageComposeResult.cancelled: "cancelled",
-            MessageComposeResult.failed: "failed",
-        ]
-        if let callback = self.result {
-            callback(map[result])
-        }
-        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
+  }
+
+  public func messageComposeViewController(_ controller: MFMessageComposeViewController, didFinishWith result: MessageComposeResult) {
+    controller.dismiss(animated: true, completion: nil)
+    switch result {
+    case .sent:
+      self.result?(true)
+    default:
+      self.result?(false)
     }
+  }
 }
